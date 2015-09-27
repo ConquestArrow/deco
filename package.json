@@ -1,0 +1,22 @@
+{
+  "name": "deco_sample",
+  "version": "0.0.0",
+  "description": "deco sample",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ConquestArrow",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "espower-typescript": "^1.0.0",
+    "mocha": "^2.3.3",
+    "power-assert": "^1.0.1",
+    "reflect-metadata": "^0.1.1",
+    "sinon": "^1.17.1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+	"compilerOptions":{
+		"target": "ES5",
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"experimentalDecorators": true,
+		"outDir": "dist"
+	},
+	"files": [
+		"src/const.ts",
+		"src/private.ts",
+		"src/abstruct.ts",
+		"test/private-test.ts"
+	],
+	"exclude": [
+		"node_modules/"
+	]
+}

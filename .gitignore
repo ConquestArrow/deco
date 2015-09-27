@@ -1,0 +1,8 @@
+node_modules/
+dist/
+typings/empower/
+typings/mocha/
+typings/power-assert/
+typings/power-assert-formatter/
+typings/tsd.d.ts
+src/abstruct.ts
