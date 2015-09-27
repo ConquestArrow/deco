@@ -356,7 +356,15 @@ describe("@private decorated class property", ()=>{
 		it("ext.getPropMethod() should not be error",()=>{
 			assert.doesNotThrow(
 				()=>{
-					t.getPropMethod();
+					ext.getPropMethod();
+				}
+			)
+		});
+		
+		it(`ext["prop"] should not be error`,()=>{
+			assert.throws(
+				()=>{
+					ext["prop"];
 				}
 			)
 		});
