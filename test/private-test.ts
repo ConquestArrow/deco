@@ -361,7 +361,7 @@ describe("@private decorated class property", ()=>{
 			)
 		});
 		
-		it(`ext["prop"] should not be error`,()=>{
+		it(`ext["prop"] should be error`,()=>{
 			assert.throws(
 				()=>{
 					ext["prop"];
