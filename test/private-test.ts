@@ -613,7 +613,7 @@ describe("@privated decorated class method", ()=>{
 		it("ext.callMethod() should not be error",()=>{
 			assert.doesNotThrow(
 				()=>{
-					t.callMethod();
+					ext.callMethod();
 				}
 			)
 		});
