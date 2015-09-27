@@ -2,12 +2,12 @@
   "name": "deco_sample",
   "version": "0.0.0",
   "description": "deco sample",
-  "main": "index.js",
+  "main": "",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/mocha/bin/mocha --compilers ts:espower-typescript/guess test/*-test.ts"
   },
   "author": "ConquestArrow",
   "license": "MIT",
