@@ -106,6 +106,10 @@ describe("@private decorated class property", ()=>{
 			)
 		});
 		
+		it(`bracket access Test["prop"]`,()=>{
+			assert.equal(Test["prop"],undefined);
+		});
+		
 		
 		it(`Object.getOwnPropertyDescriptor(t, "prop").value`,()=>{
 			
@@ -218,6 +222,14 @@ describe("@private decorated class property", ()=>{
 				()=>{
 					t["prop"] = 1;
 				}
+			)
+		});
+		
+		it(`bracket access Test["prop"] = 2;`, ()=>{
+			Test["prop"] = 2;
+			assert.notEqual(
+				Test["prop"],t.getPropMethod(),
+				`Test["prop"]:${Test["prop"]}`
 			)
 		});
 		
