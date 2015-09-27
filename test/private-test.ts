@@ -390,6 +390,10 @@ describe("@privated decorated class method", ()=>{
 		set prop(val:any){
 			val = this.method();
 		}
+		
+		get test2(){
+			return this.test();
+		}
 	}
 	let t:MethodTest = new MethodTest();
 	beforeEach(()=>{
@@ -433,6 +437,7 @@ describe("@privated decorated class method", ()=>{
 		it("getter access",()=>{
 			assert.doesNotThrow(()=>{
 				t.prop;
+				t.test2;
 			});
 		});
 		
@@ -455,6 +460,12 @@ describe("@privated decorated class method", ()=>{
 		it(`t["method"]()`,()=>{
 			assert.throws(()=>{
 				t["method"]();
+			})
+		})
+		
+		it(`MethodTest.method()`,()=>{
+			assert.throws(()=>{
+				MethodTest["method"]();
 			})
 		})
 		
@@ -561,6 +572,41 @@ describe("@privated decorated class method", ()=>{
 			);
 			
 		});
+	});
+	
+	context("extended class access",()=>{
+		class ExTest extends MethodTest{
+			constructor(){
+				super();
+			}
+			
+			callMethodFromChildMethod(){
+				return this["method"]();
+			}
+			
+		}
+		let ext:ExTest;
+		beforeEach(()=>{
+			ext = new ExTest();
+		});
+		
+		it("ext.callMethod() should not be error",()=>{
+			assert.doesNotThrow(
+				()=>{
+					t.callMethod();
+				}
+			)
+		});
+		
+		it("ext.callMethodFromChildMethod() should be error",()=>{
+			assert.throws(
+				()=>{
+					ext.callMethodFromChildMethod();
+				}
+			)
+		});
+		
+		
 	});
 	
 	
