@@ -43,5 +43,5 @@ a["prop"];		//runtime error!
 a["method"]();	//runtime error!
 ```
 
- + [source code](./src/private.ts)
+ + [source code](./src/private.ts) | [sample test code](./test/private-test.ts)
  * [TypeScript/ES7でprivate風メソッド、プロパティ](http://qiita.com/ConquestArrow/items/e707ea70822ec82220da)
