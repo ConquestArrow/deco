@@ -20,17 +20,27 @@ export function privated<T>(target:T, key:string|symbol, desc?:PropertyDescripto
 	delete target[key];
 	
 	const pName = "custom:private:"+target.constructor.name;
+	const pOrig = `${pName}:original`;
 	
 	const protoNames = Object.getOwnPropertyNames(target);
+	const protoSymbols = Object.getOwnPropertySymbols(target);
 	const protoLen = protoNames.length;
-	for(let i=0|0;(i|0)<(protoLen|0);i++){
+	const symLen = protoSymbols.length;
+	const Len = protoLen + symLen;
+	for(let i=0|0;(i|0)<(Len|0);i++){
 		//let o = target[protoNames[i]];
-		let pd = Object.getOwnPropertyDescriptor(target, protoNames[i]);
+		
+		const pKey = 
+			(i<protoLen)?
+				protoNames[i] :
+				protoSymbols[i-protoLen];
+		
+		let pd = Object.getOwnPropertyDescriptor(target, pKey);
 		
 		
 		if(!pd.get && !pd.set){
 			//function
-			let o = target[protoNames[i]];
+			let o = target[pKey];
 			if(Reflect.hasMetadata(pName,o)){
 				continue;
 			}
@@ -76,16 +86,36 @@ export function privated<T>(target:T, key:string|symbol, desc?:PropertyDescripto
 		
 	}
 	
-	let isMember = function isMember(accessor:Function, isGetter:boolean, targetClass:T){
+	let isMember = function isMember(accessor:Function, isGetter:boolean, targetClass:T, repFunc?:Function){
 		let isM:boolean = false;
-		for(let s of Object.getOwnPropertyNames(targetClass)){
+		
+		const props = Object.getOwnPropertyNames(targetClass);
+		const syms = Object.getOwnPropertySymbols(targetClass);
+		const pLen = props.length;
+		const sLen = syms.length;
+		const Len = pLen + sLen;
+		
+		for(let i=0|0; (i|0)<(Len|0); i++ ){
+			
+			const s = 
+				(i<pLen)?
+					props[i] :
+					syms[i-pLen];
 			
 			//method
 			if(isGetter===null){
 				const pd = Object.getOwnPropertyDescriptor(targetClass,s);
 				if(!pd.get && !pd.set){
 					//function
-					isM = targetClass[s] === accessor;
+					if(Reflect.hasMetadata(pOrig,pd.value)){
+						isM = Reflect.getMetadata(
+							pOrig,
+							pd.value
+						) === accessor;
+					}else{
+						isM = pd.value === accessor;
+					}
+					
 					if(isM)break;
 				}else{
 					//getter/setter
@@ -165,11 +195,12 @@ export function privated<T>(target:T, key:string|symbol, desc?:PropertyDescripto
 		
 		
 		
-		if(capsuled && isMember(pFunc.caller,null,target)){
+		if(capsuled && isMember(pFunc.caller,null,target, pFunc)){
 			desc.value.apply(this,args);
 			//console.log(desc.value.apply(this,args));
 		}
 		else{
+			console.log(`isMember:${isMember(pFunc.caller,null,target)}`);
 			throw Error(`Cannot call @privated method "${key}"`);
 		}
 	}
@@ -177,6 +208,18 @@ export function privated<T>(target:T, key:string|symbol, desc?:PropertyDescripto
 	
 	if(desc){
 	//class method
+		
+		Reflect.defineMetadata(
+			pName,
+			target.constructor,
+			pFunc
+		);
+		Reflect.defineMetadata(
+			pOrig,
+			desc.value,
+			pFunc
+		)
+		
 		return <PropertyDescriptor>{
 			enumerable:false,
 			configurable:desc.configurable,
@@ -184,6 +227,18 @@ export function privated<T>(target:T, key:string|symbol, desc?:PropertyDescripto
 		};
 	}else{
 	//class property
+		
+		Reflect.defineMetadata(
+			pName,
+			target.constructor,
+			pGet
+		);
+		Reflect.defineMetadata(
+			pName,
+			target.constructor,
+			pSet
+		);
+		
 		Object.defineProperty(
 			target,
 			key,
