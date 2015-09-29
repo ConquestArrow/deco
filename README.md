@@ -17,7 +17,7 @@ a.prop2 = 100;      //error!:Uncaught TypeError: Can't add property prop2, objec
  * [TypeScript/ES6+ES7でクラスメンバーの追加を阻止](http://qiita.com/ConquestArrow/items/68de51c92febd80ba21d)
 
 
-## `@readonly` : Pseudo class constructor property
+## `@readonly` : Pseudo class constraint property
 
 ```
 class A{
