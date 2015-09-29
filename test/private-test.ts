@@ -7,12 +7,10 @@ import {privated} from '../src/private';
 import "../node_modules/reflect-metadata/";
 
 describe("@private decorated class property", ()=>{
-	
 	class Test{
 		@privated private prop = 1;
 		@privated private prop2nd = "";
 		@privated private prop3rd = false;
-		
 		
 		getPropMethod(){
 			return this.prop;
@@ -338,16 +336,18 @@ describe("@private decorated class property", ()=>{
 		});
 	});
 	
-	context("extended class access",()=>{
-		class ExTest extends Test{
-			constructor(){
-				super();
-			}
-			
-			getPropFromChildMethod(){
-				return this["prop"];
-			}
+	class ExTest extends Test{
+		constructor(){
+			super();
 		}
+		
+		getPropFromChildMethod(){
+			return this["prop"];
+		}
+	}
+	
+	context("extended class access",()=>{
+		
 		let ext:ExTest;
 		beforeEach(()=>{
 			ext = new ExTest();
@@ -383,15 +383,34 @@ describe("@private decorated class property", ()=>{
 
 describe("@privated decorated class method", ()=>{
 	
+	const sym = Symbol("symMethod");
+	const symPub = Symbol("callSymMethod");
 	class MethodTest{
 		@privated private method(){
 			return true;
 		}
 		@privated private test(){}
 		
+		@privated private [sym](){
+			return false;
+		}
+		
+		@privated private _callPrivateFromPrivate(){
+			"_callPrivateFromPrivate";
+			return this.method();
+		}
+		
+		callPrivateFromPrivate(){
+			return this._callPrivateFromPrivate();
+		}
+		
 		callMethod(){
 			//this.method();
 			this.method();
+		}
+		
+		[symPub](){
+			this[sym]();
 		}
 		
 		private callPrivateMethod(){
@@ -426,11 +445,11 @@ describe("@privated decorated class method", ()=>{
 			assert.equal(t.hasOwnProperty("method"),false);
 		});
 		
-		/*
-		it(`"method" in t === false`,()=>{
-			assert.equal("method" in t,false);
+		
+		it(`hasOwnProperty(sym) === false`,()=>{
+			assert.equal(t.hasOwnProperty(sym),false);
 		});
-		*/
+		
 		
 	})
 	
@@ -467,6 +486,18 @@ describe("@privated decorated class method", ()=>{
 			});
 		});
 		
+		it(`t[symPub]()`,()=>{
+			assert.doesNotThrow(()=>{
+				t[symPub]();
+			});
+		})
+		
+		it(`t.callPrivateFromPrivate()`,()=>{
+			assert.doesNotThrow(()=>{
+				t.callPrivateFromPrivate();
+			})
+		})
+		
 	});
 	
 	context(`external access should be error`,()=>{
@@ -488,6 +519,12 @@ describe("@privated decorated class method", ()=>{
 				MethodTest["method"]();
 			})
 		})
+		
+		it(`t[sym]()`,()=>{
+			assert.throws(()=>{
+				t[sym]();
+			})
+		});
 		
 		it(`Object.getOwnPropertyDescriptor(t, "method").value`,()=>{
 			
