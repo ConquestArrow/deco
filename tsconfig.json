@@ -10,8 +10,9 @@
 	"files": [
 		"src/const.ts",
 		"src/private.ts",
+		"src/seal.ts",
 		"src/abstruct.ts",
-		"test/private-test.ts"
+		"test/private-test.ts",
 	],
 	"exclude": [
 		"node_modules/"
