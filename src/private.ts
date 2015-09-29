@@ -200,7 +200,6 @@ export function privated<T>(target:T, key:string|symbol, desc?:PropertyDescripto
 			//console.log(desc.value.apply(this,args));
 		}
 		else{
-			console.log(`isMember:${isMember(pFunc.caller,null,target)}`);
 			throw Error(`Cannot call @privated method "${key}"`);
 		}
 	}
