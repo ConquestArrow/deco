@@ -17,29 +17,12 @@ export function final<T extends Function>(target:T):T|void{
 		const thisname = Object.getPrototypeOf(this).constructor.name;
 		
 		if(thisname!==base.name){
-			throw Error(`A class "${base.name}" cannot extend. class "${thisname}" is invalid.`);
+			throw Error(`A class "${thisname}" cannot inherit from @final class "${base.name}".`);
 		}
 		
         return a;
     };
 
     func.prototype = base.prototype;
-	
-	//console.log(`name:${func.prototype.constructor.name}`)
-
     return func;
 }
-/*
-@final class NoExtend{}
-class Extended extends NoExtend{}
-class ExExtended extends Extended{}
-
-var Rename = NoExtend;
-class RenameExtend extends Rename{}
-
-var e1 = new NoExtend();
-//var e2 = new Extended();
-//var e3 = new ExExtended();
-var r1 = new Rename();
-var r2 = new RenameExtend();
-*/
