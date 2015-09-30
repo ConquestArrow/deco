@@ -12,9 +12,12 @@
 		"src/private.ts",
 		"src/seal.ts",
 		"src/abstruct.ts",
-		"test/private-test.ts"
+		"src/final.ts",
+		"test/private-test.ts",
+		"test/final-test.ts"
 	],
 	"exclude": [
-		"node_modules/"
+		"node_modules/",
+		"test/"
 	]
 }
