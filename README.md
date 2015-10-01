@@ -45,3 +45,14 @@ a["method"]();	//runtime error!
 
  + [source code](./src/private.ts) | [sample test code](./test/private-test.ts)
  * [TypeScript/ES7でprivate風メソッド、プロパティ](http://qiita.com/ConquestArrow/items/e707ea70822ec82220da)
+ 
+## `@final` : No inherit class
+ 
+```
+@final class A{}
+class ExA extends A{}
+var e = new ExA();	//runtime error!
+```
+
+ * [source code](./src/final.ts) | [sample test code](./test/final-test.ts)
+ * [TypeScript/ES7で継承不可なクラス](http://qiita.com/ConquestArrow/items/2739e37871f748beeb36)
