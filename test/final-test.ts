@@ -36,6 +36,37 @@ describe(`@final decorated class`,()=>{
 				new GrandchildClass();
 			})
 		});
+		
+		function Child2(name:string){
+			NoExtend.apply(this, arguments);
+		}
+		Child2.prototype = Object.create(
+			NoExtend.prototype,
+			{
+				name:{
+					writable:true
+				},
+				constructor:{
+					value: Child2,
+					enumerable: false
+				}
+			}
+		);
+		
+		it(`extend with Object.create() should be error`,()=>{
+			assert.throws(()=>{
+				new (<any>Child2)("name");
+			})
+		})
+		
+		function Child3(){}
+		Child3.prototype = Object.create(NoExtend.prototype);
+		
+		it(`Object.create() without call NoExtend constructor should not be error`,()=>{
+			assert.doesNotThrow(()=>{
+				new (<any>Child3)();
+			})
+		})
 	})
 })
 
